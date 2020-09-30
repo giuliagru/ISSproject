@@ -34,6 +34,7 @@ class Fridge ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sco
 						updateResourceRep( "checkfood"  
 						)
 						println("Fridge | Requirement: CHECK food presence")
+						delay(500) 
 						if( checkMsgContent( Term.createTerm("check_food(Foodcode)"), Term.createTerm("check_food(pizza)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								forward("food_available", "food_available(pizza)" ,"robot" ) 

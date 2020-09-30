@@ -19,6 +19,14 @@ class User ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, scope
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
+						stateTimer = TimerActor("timer_s0", 
+							scope, context!!, "local_tout_user_s0", 3000.toLong() )
+					}
+					 transition(edgeName="t022",targetState="emitCmd",cond=whenTimeout("local_tout_user_s0"))   
+					transition(edgeName="t023",targetState="end",cond=whenDispatch("test"))
+				}	 
+				state("emitCmd") { //this:State
+					action { //it:State
 						delay(2000) 
 						emit("prepare_button", "prepare_button(clicked)" ) 
 						delay(500) 
@@ -31,6 +39,11 @@ class User ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, scope
 						emit("add_button", "add_button(pasta)" ) 
 						delay(5000) 
 						emit("clear_button", "clear_button(clicked)" ) 
+					}
+				}	 
+				state("end") { //this:State
+					action { //it:State
+						terminate(0)
 					}
 				}	 
 			}

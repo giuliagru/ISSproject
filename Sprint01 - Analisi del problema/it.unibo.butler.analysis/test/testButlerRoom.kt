@@ -13,30 +13,33 @@ class testButlerRoom {
 	var robot  : ActorBasic? = null
 	var fridge : ActorBasic? = null
 	var maitre : ActorBasic? = null
+	var user : ActorBasic? = null
 		
 	val initDelayTime   = 2000L   // 
 
-	val addr       		= "localhost:8038"
-	
+	val addrrobot       = "localhost:8038"
 	val contextrobot    = "ctxrobot"
 	val destactorrobot  = "robot"
-    val uriStrRobot     = "coap://$addr/$contextrobot/$destactorrobot"
+    val uriStrRobot     = "coap://$addrrobot/$contextrobot/$destactorrobot"
 	val clientrobot		=  CoapClient()
 	
+	val addrfridge      = "localhost:8092"
 	val contextfridge   = "ctxfridge"
 	val destactorfridge = "fridge"
-    val uriStrFridge    = "coap://$addr/$contextfridge/$destactorfridge"
+    val uriStrFridge    = "coap://$addrfridge/$contextfridge/$destactorfridge"
 	val clientfridge	=  CoapClient()
 	
+	val addrmaitre       = "localhost:8094"
 	val contextmaitre   = "ctxmaitre"
 	val destactormaitre = "maitre"
-    val uriStrMaitre    = "coap://$addr/$contextmaitre/$destactormaitre"
+    val uriStrMaitre    = "coap://$addrmaitre/$contextmaitre/$destactormaitre"
 	val clientmaitre	=  CoapClient()
+	
 	
 	@Before
 	fun systemSetUp() {
    		kotlin.concurrent.thread(start = true) {
-			it.unibo.ctxrobot.main() 
+			it.unibo.ctxrobot.main()
     	} 
 	}
 	
@@ -62,28 +65,34 @@ class testButlerRoom {
 				delay(initDelayTime)  //give time to the actor to start
 				robot = it.unibo.kactor.sysUtil.getActor(destactorrobot)
 				fridge = it.unibo.kactor.sysUtil.getActor(destactorfridge)
-				maitre = it.unibo.kactor.sysUtil.getActor(destactormaitre) 
+				maitre = it.unibo.kactor.sysUtil.getActor(destactormaitre)
+				user = it.unibo.kactor.sysUtil.getActor("user")
 			}
 	 		clientrobot.uri = uriStrRobot
 	 		clientfridge.uri = uriStrFridge
 	 		clientmaitre.uri = uriStrMaitre
-			println("testPrepare |  $robot | $maitre")
+			
+			//terminate user
+			MsgUtil.sendMsg( "test", "test", "test(0)", user!! ) 
 					
 			//prepare
 			delay(500)
-	 		MsgUtil.sendMsg( "test", "prepare", "prepare(0)", maitre!!)
+			var event = MsgUtil.buildEvent("test", "prepare_button", "prepare_button(0)")
+	 		MsgUtil.sendMsg(event, maitre!!)
 	 		delay(500)
 			checkResource(clientmaitre, "prepare", "maitre")
 			checkResource(clientrobot, "preparestarted", "robot")
 			
 			//stop
-			MsgUtil.sendMsg( "test", "stop", "stop(0)", maitre!! ) 
+			event = MsgUtil.buildEvent("test", "stop_button", "stop_button(0)")
+	 		MsgUtil.sendMsg(event, maitre!!)
 	 		delay(500)
 			checkResource(clientmaitre, "stoprobot", "maitre")
 			checkResource(clientrobot, "stopped", "robot")
 			
 			//reactivate
-	 		MsgUtil.sendMsg( "test", "reactivate", "reactivate(0)", maitre!! ) 
+			event = MsgUtil.buildEvent("test", "reactivate_button", "reactivate_button(0)")
+	 		MsgUtil.sendMsg(event, maitre!!)
 	 		delay(500)
 			checkResource(clientmaitre, "reactivaterobot", "maitre")
 			checkResource(clientrobot, "reactivated", "robot")
@@ -92,30 +101,30 @@ class testButlerRoom {
 			delay(4000)
 			
 			//consult
-			MsgUtil.sendMsg( "test", "roomstate", "roomstate(0)", maitre!! ) 
+			event = MsgUtil.buildEvent("test", "roomstate", "roomstate(0)")
+	 		MsgUtil.sendMsg(event, maitre!!)
 	 		delay(500)
 			checkResource(clientmaitre, "consultroom", "maitre")
 			delay(500)
 					
 			//add
-	 		MsgUtil.sendMsg( "test", "add", "add(0)", maitre!! ) 
-	 		delay(500)
+			event = MsgUtil.buildEvent("test", "add_button", "add_button(pizza)")
+	 		MsgUtil.sendMsg(event, maitre!!)
+			delay(100)
 			checkResource(clientmaitre, "add", "maitre")
 			checkResource(clientrobot, "addstarted", "robot")
+			checkResource(clientfridge, "checkfood", "fridge")
 			delay(4000)
 			
 			//fridge
-			MsgUtil.sendMsg( "test", "check_food", "check_food(0)", fridge!! ) 
-	 		delay(500)
-			checkResource(clientfridge, "checkfood", "fridge")
-			delay(500)
 			MsgUtil.sendMsg( "test", "fridgestate", "fridgestate(0)", fridge!! ) 
 	 		delay(500)
 			checkResource(clientfridge, "exposestate", "fridge")
 			delay(4000)
 			
 			//clear
-	 		MsgUtil.sendMsg( "test", "clear", "clear(0)", maitre!! ) 
+			event = MsgUtil.buildEvent("test", "clear_button", "clear_button(0)")
+	 		MsgUtil.sendMsg(event, maitre!!) 
 	 		delay(500)
 			checkResource(clientmaitre, "clear", "maitre")
 			checkResource(clientrobot, "clearstarted", "robot")

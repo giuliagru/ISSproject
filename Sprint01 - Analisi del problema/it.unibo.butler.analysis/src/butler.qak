@@ -16,6 +16,7 @@ Dispatch check_food : check_food(Foodcode)
 Dispatch food_available : food_available(Foodcode)
 Dispatch food_not_available : food_not_available(Foodcode)
 
+Dispatch test : test(0)
 
 Event prepare_button : prepare_button(Cmd)
 Event clear_button : clear_button(Cmd)
@@ -121,6 +122,7 @@ QActor fridge context ctxfridge{
 	State check{
 		updateResource [# "checkfood" #]
 		println("Fridge | Requirement: CHECK food presence")
+		delay 500
 		onMsg(check_food : check_food(pizza)){
 			forward robot -m food_available : food_available(pizza)
 		}
@@ -214,7 +216,11 @@ QActor maitre context ctxmaitre {
 
 QActor user context ctxmaitre{
 	State s0 initial{
-		
+	} Transition t0 
+		whenTime 3000 -> emitCmd
+		whenMsg  test -> end
+	
+	State emitCmd{	
 		delay 2000
 		emit prepare_button : prepare_button(clicked)
 		delay 500
@@ -230,5 +236,9 @@ QActor user context ctxmaitre{
          
         delay 5000
         emit clear_button : clear_button(clicked)
+	}
+	
+	State end {
+		terminate 0
 	}
 }
