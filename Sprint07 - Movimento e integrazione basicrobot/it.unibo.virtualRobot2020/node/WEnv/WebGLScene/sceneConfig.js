@@ -24,6 +24,22 @@ const config = {
     ],
    staticObstacles: [
 
+		{
+            name: "fridge",
+            centerPosition: { x: 0.85, y: 1.0},
+            size: { x: 0.24, y: 0.07}
+        },
+
+        {
+            name: "dishwasher",
+            centerPosition: { x: 0.85, y: 0.0},
+            size: { x: 0.2, y: 0.045        }
+		},
+        {
+            name: "pantry",
+            centerPosition: { x: 0.18, y: 0.0},
+            size: { x: 0.2, y: 0.045        }
+		},
 		
         {
             name: "table",
