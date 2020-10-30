@@ -23,7 +23,7 @@ $(document).ready(function(){
 //Gestione dell'evento onClick del bottone addfood
 function onClickAddFood(foodcode){
 	document.getElementById('addfoodbutton').disabled = true;
-    document.getElementById('requestButton').disabled = true;
+    //document.getElementById('requestButton').disabled = true;
     document.getElementById('clearButton').disabled = true;
     if(controlFoodCodeFormat(foodcode)){
     	document.getElementById('foodcodeform').submit();    	
@@ -45,14 +45,14 @@ function onClickPrepare(){
     document.getElementById('foodcode-dropdown').style.visibility = 'visible';
     document.getElementById('prepareButton').style.visibility = 'hidden';
     document.getElementById('addfoodbutton').disabled = true;
-    document.getElementById('requestButton').style.visibility = 'visible';
+   // document.getElementById('requestButton').style.visibility = 'visible';
 }
 
 //Gestione dell'evento onClick del bottone clear
 function onClickClear(){
     document.getElementById('addfoodbutton').disabled = true;
     document.getElementById('clearButton').disabled = true;
-    document.getElementById('requestButton').disabled = true;
+   // document.getElementById('requestButton').disabled = true;
     document.getElementById('clearform').submit();
     
 }
@@ -186,7 +186,7 @@ function abilitaButton(){
     document.getElementById('addfoodbutton').disabled = false;
     document.getElementById('clearButton').disabled = false;
     document.getElementById('stopButton').disabled = false;		
-    document.getElementById('requestButton').disabled = false;
+   // document.getElementById('requestButton').disabled = false;
    
 }
 
