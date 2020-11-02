@@ -1,6 +1,16 @@
 %% on(location, type, object, quantity)
-on(fridge, food, pizza, 5).
-on(fridge, food, pasta, 6).
+on(fridge, food, f000, 15).
+on(fridge, food, f001, 36).
+on(fridge, food, f002, 25).
+on(fridge, food, f003, 6).
+on(fridge, food, f004, 5).
+on(fridge, food, f005, 3).
+on(fridge, food, f006, 9).
+on(fridge, food, f007, 17).
+on(fridge, food, f008, 11).
+on(fridge, food, f009, 10).
+on(fridge, food, f010, 5).
+on(fridge, food, f011, 8).
 
 state(fridge, List) :- setof((fridge, Type, Object, Quantity), on(fridge, Type, Object, Quantity), List). 
 

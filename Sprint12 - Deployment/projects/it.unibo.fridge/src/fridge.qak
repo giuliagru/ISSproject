@@ -4,24 +4,16 @@ Request check_food : check_food(Foodcode, Quantity)
 Reply food_available : food_available(Foodcode, Quantity)
 Reply food_notavailable : food_notavailable(Foodcode, Quantity)
 
-Request exposefridgestate : exposefridgestate(Cmd)
-Reply fridgestate: fridgestate(List)
-
 Dispatch take_food : take_food(Foodcode, Quantity)
 Dispatch take_foodlist : take_foodlist(List)
 
+Request exposefridgestate : exposefridgestate(Cmd)
+Reply fridgestate: fridgestate(List)
 
-Request exposeroomstate : exposeroomstate(Cmd)
-Reply roomstate : roomstate(List)
+Event fridgestate : fridgestate(X)
 
-Request goto : goto(Destination)
-Reply arrivedat : arrivedat(Destination)
 
-Request step       : step( TIME )	
-Reply   stepdone   : stepdone(V)  
-Reply   stepfail   : stepfail(DURATION, CAUSE)
-
-Context ctxfridge ip [host="localhost" port=8039] 
+Context ctxfridge ip [host="localhost" port=8038]
 
 QActor fridge context ctxfridge{
 	State s0 initial{
@@ -77,12 +69,10 @@ QActor fridge context ctxfridge{
 				}
 			}			
 		}
-//		//TODO: coap??
-//		solve(state(fridge, List))
-//		
-//		[# val L = getCurSol("List").toString() #]
-//		println("bella $L" )
-//		emit fridgestate : fridgestate($L) 
+		solve(state(fridge, List))
+		
+		[# val L = getCurSol("List").toString() #]
+		emit fridgestate : fridgestate($L) 
 		
 	}Goto waitCmd
 	

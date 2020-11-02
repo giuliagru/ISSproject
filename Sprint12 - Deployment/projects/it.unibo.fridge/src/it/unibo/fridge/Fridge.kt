@@ -81,6 +81,9 @@ class Fridge ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sco
 								else
 								{}
 						}
+						solve("state(fridge,List)","") //set resVar	
+						 val L = getCurSol("List").toString()  
+						emit("fridgestate", "fridgestate($L)" ) 
 					}
 					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
 				}	 

@@ -23,7 +23,7 @@ sourceCompatibility = 1.8
 repositories {
     mavenCentral()
     jcenter()
-    flatDir {   dirs 'C://Users//s.brescia//Desktop//Personale//Universita//Ingegneria_sistemi_software//NATALI//libs'	 }
+    flatDir {   dirs 'C://Users//giuly//Documents//uni//ISS//libs'	 }
 }
 
 dependencies {
@@ -88,17 +88,8 @@ sourceSets {
     main.java.srcDirs += 'resources'
     test.java.srcDirs += 'test'		//test is specific
 }
-mainClassName ='it.unibo.ctxmaitre.MainCtxmaitreKt'
 
-jar {
-    println("executing jar")
-    from sourceSets.main.allSource
-    manifest { 
-        attributes 'Main-Class': "$mainClassName"
-    }
- }
-/*
-mainClassName = 'it.unibo.TODOKt'
+mainClassName = 'it.unibo.ctxmaitre.MainCtxmaitreKt'
 
 jar {
     println("executing jar")
@@ -107,4 +98,4 @@ jar {
         attributes 'Main-Class': "$mainClassName"
     }
 }
-*/
+

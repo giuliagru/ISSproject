@@ -35,7 +35,7 @@ class Maitre ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sco
 					 transition(edgeName="t12",targetState="add",cond=whenEvent("add_button"))
 					transition(edgeName="t13",targetState="clear",cond=whenEvent("clear_button"))
 					transition(edgeName="t14",targetState="stoprobot",cond=whenEvent("stop_button"))
-					transition(edgeName="t15",targetState="waitCmdPrepare",cond=whenDispatch("endSession"))
+					transition(edgeName="t15",targetState="waitCmdPrepare",cond=whenEvent("endSession"))
 				}	 
 				state("exposeroomstate") { //this:State
 					action { //it:State

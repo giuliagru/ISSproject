@@ -29,7 +29,7 @@ class Console ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 					transition(edgeName="t08",targetState="updateroom",cond=whenEvent("roomstate"))
 					transition(edgeName="t09",targetState="updaterobotpos",cond=whenEvent("robotposition"))
 					transition(edgeName="t010",targetState="updaterobotaction",cond=whenEvent("robotaction"))
-					transition(edgeName="t011",targetState="updaterobotgoal",cond=whenEvent("robotgoal"))
+					transition(edgeName="t011",targetState="updaterobotdest",cond=whenEvent("robotdest"))
 					transition(edgeName="t012",targetState="handlerobotmsg",cond=whenEvent("food_notavailable"))
 				}	 
 				state("updatefridge") { //this:State
@@ -92,14 +92,18 @@ class Console ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 					}
 					 transition( edgeName="goto",targetState="waitUpdate", cond=doswitch() )
 				}	 
-				state("updaterobotgoal") { //this:State
+				state("updaterobotdest") { //this:State
 					action { //it:State
-						if( checkMsgContent( Term.createTerm("robotgoal(X)"), Term.createTerm("robotgoal(X)"), 
+						if( checkMsgContent( Term.createTerm("robotdest(Dest,X,Y)"), Term.createTerm("robotdest(Dest,X,Y)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								println("ROBOT GOAL:")
 								println(payloadArg(0))
-								 val my = myself	 
-								utils.utilsFrontend.updateGoalToFrontend( my, payloadArg(0)  )
+								 
+												val my = myself	
+												val FormattedDest = ":" + payloadArg(0) + " (" + payloadArg(1) + "," + payloadArg(2) +"))"
+												println(FormattedDest)
+												
+								utils.utilsFrontend.updateGoalToFrontend( my, FormattedDest  )
 						}
 					}
 					 transition( edgeName="goto",targetState="waitUpdate", cond=doswitch() )
