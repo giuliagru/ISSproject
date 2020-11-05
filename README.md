@@ -2,8 +2,8 @@
 Progetto d'esame per il corso di [Ingegneria dei Sistemi Software M](https://www.unibo.it/it/didattica/insegnamenti/insegnamento/2018/385373)
 
 ## Team
-* Silvia Brescia  - silvia.brescia@studio.unibo.it
-* Giulia Grundler - giulia.grundler@studio.unibo.it
+Silvia Brescia  - silvia.brescia@studio.unibo.it\
+Giulia Grundler - giulia.grundler@studio.unibo.it
 
 ## Descrizione
 L'obiettivo del progetto consiste nella realizzazione di un robot cameriere (capace di prepare e pulire il tavolo di un buffet, sotto la guida di un maitre), dell'applicazione da cui il maitre può inviare comandi al robot e del software che gestisce un frigo smart. Per maggiori dettagli: [Sprint00 - Analisi dei requisiti / TFBO19ISS.pdf](https://github.com/giuliagru/ISSproject/blob/master/Sprint00%20-%20Analisi%20dei%20requisiti/TFBO19ISS.pdf)
