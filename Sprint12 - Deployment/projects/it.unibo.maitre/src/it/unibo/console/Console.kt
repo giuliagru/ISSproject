@@ -25,18 +25,18 @@ class Console ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sc
 				state("waitUpdate") { //this:State
 					action { //it:State
 					}
-					 transition(edgeName="t07",targetState="updatefridge",cond=whenEvent("fridgestate"))
-					transition(edgeName="t08",targetState="updateroom",cond=whenEvent("roomstate"))
-					transition(edgeName="t09",targetState="updaterobotpos",cond=whenEvent("robotposition"))
-					transition(edgeName="t010",targetState="updaterobotaction",cond=whenEvent("robotaction"))
-					transition(edgeName="t011",targetState="updaterobotdest",cond=whenEvent("robotdest"))
-					transition(edgeName="t012",targetState="handlerobotmsg",cond=whenEvent("food_notavailable"))
+					 transition(edgeName="t08",targetState="updatefridge",cond=whenEvent("fridgestate"))
+					transition(edgeName="t09",targetState="updateroom",cond=whenEvent("roomstate"))
+					transition(edgeName="t010",targetState="updaterobotpos",cond=whenEvent("robotposition"))
+					transition(edgeName="t011",targetState="updaterobotaction",cond=whenEvent("robotaction"))
+					transition(edgeName="t012",targetState="updaterobotdest",cond=whenEvent("robotdest"))
+					transition(edgeName="t013",targetState="handlerobotmsg",cond=whenEvent("food_notavailable"))
 				}	 
 				state("updatefridge") { //this:State
 					action { //it:State
 						if( checkMsgContent( Term.createTerm("fridgestate(X)"), Term.createTerm("fridgestate(List)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
-												
+										println("SONO QUI!")
 													val L = payloadArg(0)
 													println(L)
 													val my = myself							

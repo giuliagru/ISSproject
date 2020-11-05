@@ -1,0 +1,2 @@
+item(basicrobot,s0,msg(autoStartSysMsg,dispatch,basicrobot,basicrobot,start,7)).
+item(robotsonar,nostate,msg(sonarstart,dispatch,basicrobot,robotsonar,sonarstart(1),9)).

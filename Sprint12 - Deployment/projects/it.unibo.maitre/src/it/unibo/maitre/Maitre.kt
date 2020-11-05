@@ -40,6 +40,20 @@ class Maitre ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sco
 				state("exposeroomstate") { //this:State
 					action { //it:State
 						forward("expose", "expose(Cmd)" ,"robot" ) 
+						request("exposefridgestate", "exposefridgestate(fridge)" ,"fridge" )  
+					}
+					 transition(edgeName="t16",targetState="updateFrontend",cond=whenReply("fridgestateReplay"))
+				}	 
+				state("updateFrontend") { //this:State
+					action { //it:State
+						if( checkMsgContent( Term.createTerm("fridgestateReplay(List)"), Term.createTerm("fridgestateReplay(List)"), 
+						                        currentMsg.msgContent()) ) { //set msgArgList
+								println("Maitre | FRIDGE STATE RECIVED")
+								 var Food: String = payloadArg(0);
+											   var Foodstring = Food.replace(",(","(")  
+								solve("text_term($Foodstring,Foods)","") //set resVar	
+								emit("fridgestate", "fridgestate(${getCurSol("Foods")})" ) 
+						}
 					}
 					 transition( edgeName="goto",targetState="waitCmdPrepare", cond=doswitch() )
 				}	 
@@ -89,7 +103,7 @@ class Maitre ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sco
 								forward("stop", "stop(Action)" ,"robot" ) 
 						}
 					}
-					 transition(edgeName="t16",targetState="reactivaterobot",cond=whenEvent("reactivate_button"))
+					 transition(edgeName="t17",targetState="reactivaterobot",cond=whenEvent("reactivate_button"))
 				}	 
 				state("reactivaterobot") { //this:State
 					action { //it:State

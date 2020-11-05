@@ -93,7 +93,8 @@ class Fridge ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sco
 						)
 						solve("state(fridge,List)","") //set resVar	
 						if( currentSolution.isSuccess() ) {println("Fridge | state: ${getCurSol("List")}")
-						answer("exposefridgestate", "fridgestate", "fridgestate(${getCurSol("List")})"   )  
+						val L = getCurSol("List").toString()  
+						answer("exposefridgestate", "fridgestateReplay", "fridgestateReplay($L)"   )  
 						}
 						else
 						{}

@@ -6,9 +6,10 @@ Reply food_notavailable : food_notavailable(Foodcode, Quantity)
 
 Dispatch take_food : take_food(Foodcode, Quantity)
 Dispatch take_foodlist : take_foodlist(List)
+Dispatch exposefridge : exposefridgestate(Cmd)
 
 Request exposefridgestate : exposefridgestate(Cmd)
-Reply fridgestate: fridgestate(List)
+Reply fridgestateReplay: fridgestateReplay(List)
 
 Event fridgestate : fridgestate(X)
 
@@ -83,8 +84,11 @@ QActor fridge context ctxfridge{
 		solve(state(fridge, List))
 		ifSolved{
 			println("Fridge | state: ${getCurSol(\"List\")}")
-			replyTo exposefridgestate with fridgestate : fridgestate($getCurSol("List")) 
+			[#val L = getCurSol("List").toString() #]
+			replyTo exposefridgestate with fridgestateReplay : fridgestateReplay($L)
 		}
 	}	
 	Goto waitCmd	
+	
+	
 }
