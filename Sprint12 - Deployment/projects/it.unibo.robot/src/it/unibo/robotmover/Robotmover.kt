@@ -28,14 +28,18 @@ class Robotmover ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 				var CurrentPlannedMove = ""
 				var BackTime = 320L
 				
-				//VIRTUAL ROBOT
-				var StepTime   = 320
+				var StepTime   = ""
 				var PauseTime  = 500L
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
 						solve("consult('sysRules.pl')","") //set resVar	
 						solve("consult('roomcoordinates.pl')","") //set resVar	
+						solve("consult('stepconfig.pl')","") //set resVar	
+						solve("step(Time,Pause)","") //set resVar	
+						
+									StepTime = getCurSol("Time").toString()
+									PauseTime = getCurSol("Pause").toString().toLong()
 						itunibo.planner.plannerUtil.initAI(  )
 						itunibo.planner.plannerUtil.loadRoomMap( mapname  )
 						itunibo.planner.plannerUtil.showMap(  )
@@ -102,7 +106,7 @@ class Robotmover ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 					action { //it:State
 						updateResourceRep( "stopped"  
 						)
-						println("APPLICATION STOPPED. Waiting for a reactivate")
+						println("Robot mover | STOPPED: Waiting for a reactivate")
 					}
 					 transition(edgeName="t027",targetState="handleReactivateAppl",cond=whenDispatch("reactivate"))
 				}	 
@@ -110,7 +114,7 @@ class Robotmover ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 					action { //it:State
 						updateResourceRep( "resumed"  
 						)
-						println("APPLICATION RESUMED")
+						println("Robot mover | RESUMED")
 					}
 					 transition(edgeName="t028",targetState="handleStepOk",cond=whenReply("stepdone"))
 					transition(edgeName="t029",targetState="hadleStepFail",cond=whenReply("stepfail"))
@@ -139,7 +143,6 @@ class Robotmover ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 					action { //it:State
 						if( checkMsgContent( Term.createTerm("stepfail(DURATION,CAUSE)"), Term.createTerm("stepfail(Dur,Cause)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
-								println("stepfail: ${payloadArg(1)}")
 								 
 												BackTime = payloadArg(0).toLong()
 								updateResourceRep( "stepfail"  
@@ -148,6 +151,7 @@ class Robotmover ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 								 ){forward("cmd", "cmd(s)" ,"basicrobot" ) 
 								delay(BackTime)
 								forward("cmd", "cmd(h)" ,"basicrobot" ) 
+								delay(1500) 
 								}
 						}
 					}
