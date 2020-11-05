@@ -9,7 +9,7 @@ Tramite il file `bin / preparerequirements.pl` è possibile configurare la lista
 Tramite il file `bin / roomstate.pl` è possibile configurare lo stato iniziale delle risorse non smart, ovvero tavolo, dispensa e lavastoviglie, con predicati prolog del tipo `on(Location, Type, Object, Quantity)`\
 Tramite il file `bin / roommap.bin` è possibile modificare la mappa della stanza.\
 Tramite il file `bin / roomcoordinates.pl` è possibile configurare la posizione delle risorse nella stanza, con predicati prolog del tipo `position(Resource, XCordinate, YCordinate, RobotDirection)`\
-Tramite il file `bin / roomstate.pl` è possibile configurare la durata dello step da richiedere al basicrobot e la durata della pausa tra unp step e l'altro, con predicati prolog del tipo `step(StepTime, PauseTime)`
+Tramite il file `bin / roomstate.pl` è possibile configurare la durata dello step da richiedere al basicrobot e la durata della pausa tra uno step e l'altro, con predicati prolog del tipo `step(StepTime, PauseTime)`
 
 Tramite il file `bin / robot.pl` è possibile configurare il contesto di esecuzione.\
 Il file `bin / it.unibo.robot.bat` esegue l'applicazione.
