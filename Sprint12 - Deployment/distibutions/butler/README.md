@@ -2,7 +2,7 @@
 L'applicazione contiene diversi attori che rappresentano le varie componenti del robot:
 * il robot è l'interfaccia di alto livello che riceve i comandi del maitre
 * il robotexecutor è l'esecutore dei comandi e i suoi stati rappresentano le diverse fasi di ogni task
-* il robotmover si occupa di gestire il movimento, con l'aiuto di un planner sviluppato dal Prof. Natali
+* il robotmover si occupa di gestire il movimento verso le diverse risorse, inviando comandi al basicrobot, con l'aiuto di un planner sviluppato dal Prof. Natali
 * il roomstate si occupa di mantenere lo stato delle risorse non smart della stanza
 
 Tramite il file `bin / preparerequirements.pl` è possibile configurare la lista di stoviglie e cibi che il robot deve portare sul tavolo all'inizio del buffet.\
