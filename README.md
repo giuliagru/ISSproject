@@ -6,7 +6,8 @@ Silvia Brescia  - silvia.brescia@studio.unibo.it\
 Giulia Grundler - giulia.grundler@studio.unibo.it
 
 ## Descrizione
-L'obiettivo del progetto consiste nella realizzazione di un robot cameriere (capace di prepare e pulire il tavolo di un buffet, sotto la guida di un maitre), dell'applicazione da cui il maitre può inviare comandi al robot e del software che gestisce un frigo smart. Per maggiori dettagli: [Sprint00 - Analisi dei requisiti / TFBO19ISS.pdf](https://github.com/giuliagru/ISSproject/blob/master/Sprint00%20-%20Analisi%20dei%20requisiti/TFBO19ISS.pdf)
+L'obiettivo del progetto consiste nella realizzazione di un robot cameriere (capace di prepare e pulire il tavolo di un buffet, sotto la guida di un maitre), dell'applicazione da cui il maitre può inviare comandi al robot e del software che gestisce un frigo smart.\
+Per maggiori dettagli: [Sprint00 - Analisi dei requisiti / TFBO19ISS.pdf](https://github.com/giuliagru/ISSproject/blob/master/Sprint00%20-%20Analisi%20dei%20requisiti/TFBO19ISS.pdf)
 
 Il progetto è per la maggior parte realizzato utilizzando il linguaggio QActor, sviluppato dal Prof. Antonio Natali. Le librerie del linguaggio, i componenti basicrobot e virtualrobot e altre risorse sono disponibili qui: [github.com/anatali/iss2020LabBo](https://github.com/anatali/iss2020LabBo)
 
