@@ -29,11 +29,11 @@ class User ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, scope
 					action { //it:State
 						delay(2000) 
 						emit("prepare_button", "prepare_button(clicked)" ) 
-						delay(2000) 
+						delay(3000) 
 						emit("add_button", "add_button(pizza,2)" ) 
-						delay(2000) 
+						delay(3000) 
 						emit("add_button", "add_button(pasta,1)" ) 
-						delay(2000) 
+						delay(3000) 
 						emit("clear_button", "clear_button(clicked)" ) 
 					}
 				}	 
