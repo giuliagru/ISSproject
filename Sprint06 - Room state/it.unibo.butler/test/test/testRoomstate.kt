@@ -84,9 +84,10 @@ class testRoomstate{
 			delay(1000)
 			checkResource(clientroomstate, "updateroomstate", "roomstate")
 			delay(10000)
-		
-	 		MsgUtil.sendMsg("test", "exposeroomstate", "exposeroomstate(0)", roomstate!!)
-	 		delay(200)
+			
+			var req = MsgUtil.buildRequest( "test", "exposeroomstate", "exposeroomstate(0)", "roomstate" )
+			MsgUtil.sendMsg(req, roomstate!!) 
+	 		delay(500)
 			checkResource(clientroomstate, "exposeroomstate", "roomstate")
 			
 						
