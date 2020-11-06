@@ -47,6 +47,8 @@ companion object {
                 while (true) {
                     try {
                         val inpuStr = inFromServer.readLine()
+						println("sensorObserver inpuStr= $inpuStr")
+						if( inpuStr == null ) break;		//JUNE2020
                         val jsonMsgStr =
                             inpuStr!!.split(";".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[1]
                         //println("inpuStr= $jsonMsgStr")
@@ -69,9 +71,12 @@ companion object {
                               }
                         }
                     } catch (e: Exception) {
-                        e.printStackTrace()
+                        //e.printStackTrace()
+						println("startSensorObserver ERROR: ${e.message}")
+						break
                     }
                 }
+ 				println("sensorObserver ENDS, since has received null ")
             }
          }//startSensorObserver 
 

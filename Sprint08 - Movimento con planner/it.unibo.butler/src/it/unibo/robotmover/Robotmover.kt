@@ -30,6 +30,8 @@ class Robotmover ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 				//VIRTUAL ROBOT
 				var StepTime   = 320
 				var PauseTime  = 500L
+				
+				var DestFound = true
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
@@ -57,14 +59,22 @@ class Robotmover ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 								println("Robot mover	| going to ${payloadArg(0)}")
 								 Dest = payloadArg(0)  
 								solve("position($Dest,X,Y,D)","") //set resVar	
-								
-												X = getCurSol("X").toString()
-												Y = getCurSol("Y").toString()
-												Direction = getCurSol("D").toString()
+								if( currentSolution.isSuccess() ) {
+													X = getCurSol("X").toString()
+													Y = getCurSol("Y").toString()
+													Direction = getCurSol("D").toString()
 								itunibo.planner.plannerUtil.planForGoal( X, Y  )
+								}
+								else
+								{println("Robot mover	| Destinazione non trovata")
+								DestFound = false 
+								}
 						}
 					}
-					 transition( edgeName="goto",targetState="execplan", cond=doswitch() )
+					 transition( edgeName="goto",targetState="execplan", cond=doswitchGuarded({DestFound 
+					}) )
+					transition( edgeName="goto",targetState="waitCmd", cond=doswitchGuarded({! (DestFound 
+					) }) )
 				}	 
 				state("execplan") { //this:State
 					action { //it:State

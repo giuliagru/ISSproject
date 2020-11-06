@@ -50,13 +50,16 @@ class testmover{
 	@kotlinx.coroutines.ObsoleteCoroutinesApi
 	@kotlinx.coroutines.ExperimentalCoroutinesApi	
 	@Test
-	fun testmover(){
+	fun testm(){
+			
  		runBlocking{
+			
 			while(robotmover==null  ){
 				delay(initDelayTime)  //give time to the actor to start
 
 				robotmover= it.unibo.kactor.sysUtil.getActor(destactorrobotmover)
-			
+				user = it.unibo.kactor.sysUtil.getActor("user")
+				
 			}
 	 	
 	 		clientrobotmover.uri = uriStrRobotmover
@@ -64,13 +67,19 @@ class testmover{
 			
 			//terminate user
 			MsgUtil.sendMsg( "test", "test", "test(0)", user!! ) 
-					
+			
 			//goto 
 			delay(500)
-			MsgUtil.sendMsg("test", "goto", "goto(fridge)", robotmover!!)
+			var req = MsgUtil.buildRequest("test", "goto", "goto(fridge)", "robotmover")
+			MsgUtil.sendMsg(req, robotmover!!)
 			delay(10000)
 			assertTrue( itunibo.planner.plannerUtil.getPosX() == 5)
 			assertTrue( itunibo.planner.plannerUtil.getPosY() == 0)
+			checkResource(clientrobotmover, "notmoving", "robotmover")
+			
+			req = MsgUtil.buildRequest("test", "goto", "goto(casamia)", "robotmover")
+			MsgUtil.sendMsg(req, robotmover!!)
+			checkResource(clientrobotmover, "notmoving", "robotmover")
 		
 						
 		}

@@ -23,7 +23,7 @@ sourceCompatibility = 1.8
 repositories {
     mavenCentral()
     jcenter()
-    flatDir {   dirs '../unibolibs'	 }
+    flatDir {   dirs 'C://Users//giuly//Documents//uni//ISS//libs'	 }
 }
 
 dependencies {
