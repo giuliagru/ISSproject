@@ -26,17 +26,20 @@ class Robotmover ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 				var Direction = ""
 				
 				var CurrentPlannedMove = ""
+				var BackTime = 320L
 				
-				//VIRTUAL ROBOT
-				var StepTime   = 320
+				var StepTime   = ""
 				var PauseTime  = 500L
-				
-				var DestFound = true
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
 						solve("consult('sysRules.pl')","") //set resVar	
 						solve("consult('roomcoordinates.pl')","") //set resVar	
+						solve("consult('stepconfig.pl')","") //set resVar	
+						solve("step(Time,Pause)","") //set resVar	
+						
+									StepTime = getCurSol("Time").toString()
+									PauseTime = getCurSol("Pause").toString().toLong()
 						itunibo.planner.plannerUtil.initAI(  )
 						itunibo.planner.plannerUtil.loadRoomMap( mapname  )
 						itunibo.planner.plannerUtil.showMap(  )
@@ -48,7 +51,7 @@ class Robotmover ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 						updateResourceRep( "notmoving"  
 						)
 					}
-					 transition(edgeName="t024",targetState="plan",cond=whenRequest("goto"))
+					 transition(edgeName="t023",targetState="plan",cond=whenRequest("goto"))
 				}	 
 				state("plan") { //this:State
 					action { //it:State
@@ -59,22 +62,17 @@ class Robotmover ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 								println("Robot mover	| going to ${payloadArg(0)}")
 								 Dest = payloadArg(0)  
 								solve("position($Dest,X,Y,D)","") //set resVar	
-								if( currentSolution.isSuccess() ) {
-													X = getCurSol("X").toString()
-													Y = getCurSol("Y").toString()
-													Direction = getCurSol("D").toString()
+								
+												X = getCurSol("X").toString()
+												Y = getCurSol("Y").toString()
+												Direction = getCurSol("D").toString()
+												//val DestString = Dest + " " + X + " " + Y
 								itunibo.planner.plannerUtil.planForGoal( X, Y  )
-								}
-								else
-								{println("Robot mover	| Destinazione non trovata")
-								DestFound = false 
-								}
+								delay(1000) 
+								emit("robotdest", "robotdest($Dest,$X,$Y)" ) 
 						}
 					}
-					 transition( edgeName="goto",targetState="execplan", cond=doswitchGuarded({DestFound 
-					}) )
-					transition( edgeName="goto",targetState="waitCmd", cond=doswitchGuarded({! (DestFound 
-					) }) )
+					 transition( edgeName="goto",targetState="execplan", cond=doswitch() )
 				}	 
 				state("execplan") { //this:State
 					action { //it:State
@@ -100,8 +98,26 @@ class Robotmover ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 						delay(PauseTime)
 						request("step", "step($StepTime)" ,"basicrobot" )  
 					}
-					 transition(edgeName="t325",targetState="handleStepOk",cond=whenReply("stepdone"))
-					transition(edgeName="t326",targetState="hadleStepFail",cond=whenReply("stepfail"))
+					 transition(edgeName="t324",targetState="handleStepOk",cond=whenReply("stepdone"))
+					transition(edgeName="t325",targetState="hadleStepFail",cond=whenReply("stepfail"))
+					transition(edgeName="t326",targetState="handleStopAppl",cond=whenDispatch("stop"))
+				}	 
+				state("handleStopAppl") { //this:State
+					action { //it:State
+						updateResourceRep( "stopped"  
+						)
+						println("Robot mover | STOPPED: Waiting for a reactivate")
+					}
+					 transition(edgeName="t027",targetState="handleReactivateAppl",cond=whenDispatch("reactivate"))
+				}	 
+				state("handleReactivateAppl") { //this:State
+					action { //it:State
+						updateResourceRep( "resumed"  
+						)
+						println("Robot mover | RESUMED")
+					}
+					 transition(edgeName="t028",targetState="handleStepOk",cond=whenReply("stepdone"))
+					transition(edgeName="t029",targetState="hadleStepFail",cond=whenReply("stepfail"))
 				}	 
 				state("othermove") { //this:State
 					action { //it:State
@@ -125,13 +141,24 @@ class Robotmover ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 				}	 
 				state("hadleStepFail") { //this:State
 					action { //it:State
-						updateResourceRep( "stepfail"  
-						)
-						forward("cmd", "cmd(s)" ,"basicrobot" ) 
-						delay(50) 
-						forward("cmd", "cmd(h)" ,"basicrobot" ) 
+						if( checkMsgContent( Term.createTerm("stepfail(DURATION,CAUSE)"), Term.createTerm("stepfail(Dur,Cause)"), 
+						                        currentMsg.msgContent()) ) { //set msgArgList
+								 
+												BackTime = payloadArg(0).toLong()
+								updateResourceRep( "stepfail"  
+								)
+								if( itunibo.planner.plannerUtil.getPosX()!=X.toInt() || itunibo.planner.plannerUtil.getPosY()!=Y.toInt() 
+								 ){forward("cmd", "cmd(s)" ,"basicrobot" ) 
+								delay(BackTime)
+								forward("cmd", "cmd(h)" ,"basicrobot" ) 
+								delay(1500) 
+								}
+						}
 					}
-					 transition( edgeName="goto",targetState="plan", cond=doswitch() )
+					 transition( edgeName="goto",targetState="execplan", cond=doswitchGuarded({ itunibo.planner.plannerUtil.getPosX()==X.toInt() && itunibo.planner.plannerUtil.getPosY()==Y.toInt()  
+					}) )
+					transition( edgeName="goto",targetState="execmove", cond=doswitchGuarded({! ( itunibo.planner.plannerUtil.getPosX()==X.toInt() && itunibo.planner.plannerUtil.getPosY()==Y.toInt()  
+					) }) )
 				}	 
 				state("changedirection") { //this:State
 					action { //it:State

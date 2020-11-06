@@ -356,6 +356,8 @@ QActor robotmover context ctxrobot{
 		//VIRTUAL ROBOT
 		var StepTime   = 320
 		var PauseTime  = 500L
+		
+		var DestFound = true
 	#]
 	
 	State s0 initial{
@@ -378,16 +380,22 @@ QActor robotmover context ctxrobot{
 			println("Robot mover	| going to ${payloadArg(0)}")
 			[# Dest = payloadArg(0) #]
 			solve(position($Dest, X, Y, D))
-			[#
-				X = getCurSol("X").toString()
-				Y = getCurSol("Y").toString()
-				Direction = getCurSol("D").toString()
-				val DestString =":" + Dest +" (" + X + "," +Y+")"
-			#]
-			emit robotgoal : robotgoal($DestString)
-			run itunibo.planner.plannerUtil.planForGoal(X,Y)
+			ifSolved{
+				[#
+					X = getCurSol("X").toString()
+					Y = getCurSol("Y").toString()
+					Direction = getCurSol("D").toString()
+					val DestString =":" + Dest +" (" + X + "," +Y+")"
+				#]
+				emit robotgoal : robotgoal($DestString)
+				run itunibo.planner.plannerUtil.planForGoal(X,Y)
+			}
+			else{
+				println("Robot mover	| Destinazione non trovata")
+				[#DestFound = false#]
+			}
 		}
-	}Goto execplan
+	}Goto execplan if [#DestFound#] else waitCmd
 	
 	State execplan{
 		[#  CurrentPlannedMove = itunibo.planner.plannerUtil.getNextPlannedMove() #]
