@@ -65,13 +65,15 @@
 	<table align="center" style="background-color: #FBF09C;">
 		<tbody>
 <tr>
-<td  style="font-size:30px;width: 300px;"> <label id="foodcodeString" align="center" style="visibility:hidden;">Seleziona un cibo...</label><br/>
+<td  style="font-size:30px;width: 300px;"> <label id="foodcodeString" align="center" style="visibility:hidden;">Select food code...</label><br/>
 </td>
 
 <td colspan="2" style="width: 300px;">
-<form action="/addfood" method="post" id="foodcodeform">				    
-								<select style="font-size:20px;width:150px;visibility:hidden;" id="foodcode-dropdown" name="foodcode"></select>								
-								<button disabled class="btn btn-default buttons" id="addfoodbutton" type="button" align="center" style="font-size:30px ;visibility:hidden; width:200px;" onclick="onClickAddFood(document.getElementById('foodcode-dropdown').options[document.getElementById('foodcode-dropdown').selectedIndex].value)">ADD FOOD</button>
+<form action="/addfood" method="post" id="foodcodeform">								    
+								<select style="font-size:20px;width:150px;visibility:hidden;background-color:#a1e6f7;" id="foodcode-dropdown" name="foodcode"></select>					
+								<button disabled class="btn btn-default buttons" id="addfoodbutton" type="button" align="center" style="font-size:30px ;visibility:hidden; width:200px;background-color:#a1e6f7;border-radius:8px;" onclick="onClickAddFood(document.getElementById('foodcode-dropdown').options[document.getElementById('foodcode-dropdown').selectedIndex].value)">ADD FOOD</button>
+							 	<button disabled class="btn btn-default buttons" type="button" align="center" style="font-size:30px ;visibility:hidden; width:150px;" ></button>
+							 	<button disabled id="requestButton" class="btn btn-default buttons" formaction="/request"  type="submit" style="font-size:30px;visibility:hidden; width:200px;margin-top:25px;background-color:#a1e6f7;border-radius:8px;" onclick="onClickRequest(document.getElementById('foodcode-dropdown').options[document.getElementById('foodcode-dropdown').selectedIndex].value)">REQUEST</button>
 							</form>
 								</td>								
 </tr>
@@ -79,7 +81,7 @@
 <tr>
 <td style="width: 300px;">
 <form action="/prepare" method="post">
-							  	<button class="btn btn-default buttons" type="submit" style="font-size:30px; ; width:200px;"  onclick="onClickPrepare()" id="prepareButton">PREPARE</button>
+							  	<button class="btn btn-default buttons" type="submit" style="font-size:30px; width:200px;border-radius:8px;"  onclick="onClickPrepare()" id="prepareButton">PREPARE</button>
 							</form>
 					
 </td>
@@ -93,7 +95,7 @@
 <td style="width: 300px;">
 				<form action="/start" method="post" id="startform">
 							    <font size="3" color="red">
-							  	<button id="startButton" type="submit" style="font-size:30px; ; width:200px;visibility:hidden;" disabled onclick="onClickStart()">START</button>
+							  	<button id="startButton" type="submit" style="font-size:30px; ; width:200px;visibility:hidden;background-color:#47d147;border-radius:8px;" disabled onclick="onClickStart()">START</button>
 							  	</font>
 							</form>
 </td>
@@ -103,19 +105,19 @@
 
 	<td style="width: 300px;">
 	<form action="/clear" method="post" id="clearform">
-							  	<button disabled class="btn btn-default buttons" type="submit" style="font-size:30px; ; width:200px;visibility:hidden;"  onclick="onClickClear()" id="clearButton">CLEAR</button>
+							  	<button disabled class="btn btn-default buttons" type="submit" style="font-size:30px; ; width:200px;visibility:hidden;border-radius:8px;"  onclick="onClickClear()" id="clearButton">CLEAR</button>
 							</form>
 	</td>
 	
 <td style="width: 300px;">
 						<form action="/stop" method="post" id="stopform">
-							  	<button id="stopButton"  type="submit" style="font-size:30px;visibility:hidden; width:200px;" onclick="onClickStop()">STOP</button>
+							  	<button id="stopButton"  type="submit" style="font-size:30px;visibility:hidden; width:200px;background-color:#ff4d4d;border-radius:8px;" onclick="onClickStop()">STOP</button>
 							</form>
+
 </td>
 </tbody>
 </table>
-
-
+							 
 </div>
 
 

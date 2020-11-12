@@ -68,6 +68,7 @@ else if(msgStr.indexOf("content") >= 0){
 			: content === "taskCompleted(endPrepare)" ? "endPrepare: "
 			: content === "taskCompleted(foodAdded)" ? "foodAdded: "
 			: content === "taskCompleted(warning)" ? "warning: "
+			: content === "taskCompleted(not_warning)" ? "not_warning: "
 			: content === "taskCompleted(endClear)" ? "endClear: "
 			: content === "taskCompleted(endAction)" ? "endAction: "
 			: "TASK NON IDENTIFICATO: ";

@@ -1,88 +1,67 @@
 /*
 frontend/uniboSupports/coapClientToResourceModel
 */
+var app = require('../applCode');  //previously was app;
 const handle           = require('./qakeventHandler');  
 const coap             = require("node-coap-client").CoapClient; 
 //var coapAddr           = "coap://192.168.1.8:5683"	//RESOURCE ON RASPBERRY PI
-var coapAddr             = "coap://localhost:5683"
-//var coapResourceAddr   	 = coapAddr + "/fridge"
-//var sensorResourceAddr   = coapAddr + "/robot/sonar"
-	
-/*
-coap
-    .tryToConnect( coapAddr )
-    .then((result ) => { //  true or error code or Error instance  
-        console.log("coap | connection done"); // do something with the result  
-    })
-    ;*/
 
-/* -------------------------------------------
-function handeData( response ){
-	console.log("		coapClientToResourceModel | handeData " + response.payload);
-}
-*/
+var coapAddr = "coap://localhost:8038/ctxfridge/fridge"
+var coapResourceAddr = coapAddr + "/ctxfridge/fridge"
 
-function createCoapClient( resourceAddr ){
-	console.log(resourceAddr)
-console.log("		coapClientToResourceModel | createCoapClient "  );
-coap
-    .observe(
-        resourceAddr /* string */,
-        "get" /* "get" | "post" | "put" | "delete" */,
-        handle.handeData //handeData /* function */
-        //[payload /* Buffer */,]
-        //[options /* RequestOptions */]
-    )
-    .then(() => { console.log("		coapClientToResourceModel | observe setup " ); /* observing was successfully set up */})
-    .catch(err => { console.log("		coapClientToResourceModel | observe error " + err )  /* handle error */ })
-    ;
-}
+	exports.setcoapAddr = function(addr){
+		coapAddr = "coap://"+ "localhost" + ":8038";
+		coapResourceAddr = coapAddr + "/ctxfridge/fridge"
+		console.log("coap coapResourceAddr " + coapResourceAddr);
+	}
 
- 
-exports.setcoapAddr = function ( addr ){
-	//coapAddr = "coap://"+ addr + ":5683";
-	//coapResourceAddr   = coapAddr + "/robot/pos" // coap://localhost:5683/robot/pos
-	coapAddr = addr
-	console.log("coap | coapResourceAddr=" + coapAddr);
-	createCoapClient( coapAddr   );
-	//createCoapClient( sensorResourceAddr );
-}
+
 
 exports.coapGet = function (  ){
+	
 	coap
 	    .request(
-	         coapResourceAddr,
-	        "get" /* "get" | "post" | "put" | "delete" */
- 	        //[payload /* Buffer */,
-	        //[options /* RequestOptions */]]
+	    	coapResourceAddr,
+	        "get", 		/* "get" | "post" | "put" | "delete" */
+	    	//new Buffer(cmd)
+ 	        //[payload 	/* Buffer */,
+	        //[options 	/* RequestOptions */]]
 	    )
-	    .then(response => { 			/* handle response */
-	    	console.log("coap get done> " + response.payload );}
-	     )
-	    .catch(err => { /* handle error */ 
-	    	console.log("coap get error> " + err );}
-	    )
-	    ;
-	    
-}//coapPut
+	    .then(response => {
+			/* handle response */
+			console.log("coap get done > " + response.payload);
+			//var expose = response.payload.toString().split(":")[1];
+			app.getIoSocket().emit('expose', expose);
+		})
+	    .catch(err => {
+			/* handle error */ 
+			console.log("coap get error> " + err );
+		});
+}//coapGet
 
-exports.coapPut = function (  cmd ){ 
-console.log("PUT " + coapResourceAddr);
+exports.coapPut = function (cmd ){ 
 	coap
 	    .request(
-	        coapResourceAddr,     
-	        "put" ,			                          // "get" | "post" | "put" | "delete"   
-	        new Buffer(cmd )                          // payload Buffer 
- 	        //[options]]							//  RequestOptions 
+	    	coapResourceAddr,     
+	        "put" , 		// "get" | "post" | "put" | "delete"   
+	        new Buffer("msg(check_food,request,js,fridge,"+cmd+",1)") // payload Buffer 
+ 	        //[options]]	// RequestOptions 
 	    )
-	    .then(response => { 			// handle response  
-	    	console.log("coap put done> " + cmd + " " + response);} 
-	     )
-	    .catch(err => { // handle error  
-	    	console.log("coap | put error> " + err + " for cmd=" + cmd);}
-	    )
-	    ;
-	    
+	    .then(response => {
+			/* handle response */  
+			console.log("coap put done > " + cmd);
+			console.log("response: " + response.payload);
+			if(response.payload.toString().includes("food_available")){
+				app.getIoSocket().emit('request', "yes");
+			}
+			else{
+				app.getIoSocket().emit('request', "no");
+			}
+		})
+	    .catch(err => {
+			/* handle error */
+			console.log("coap put error> " + err + " for cmd=" + cmd);
+		});
 }//coapPut
 
 const myself   = require('./coapClientToResourceModel');

@@ -72,7 +72,7 @@ app.post("/addfood", function (req, res, next) {
    
     r = req.body.foodcode;
     if(!patternFoodCode.test(r)){
-        console.log("Il codice del cibo deve iniziare con 'f' e contenere 3 numeri");       
+        console.log("Foodcode has to start with 'f' and contain 3 numbers");       
         }
     else{
     rest = req.body.foodcode +",1";
@@ -117,13 +117,19 @@ app.post("/startAppl", function (req, res, next) {
 
 app.post("/request", function (req, res, next) {
     console.log("\nPremuto il pulsante REQUEST");
-    if(patternFoodCode.test(req.body.foodcode)){
-		console.log(req.body.foodcode);
-		coapToFridge(req.body.foodcode);
+    r = req.body.foodcode;
+    console.log(r);
+    if(!patternFoodCode.test(r)){
+        console.log("Foodcode has to start with 'f' and contain 3 numbers");       
+        }
+    else{
+		coapToFridge("check_food("+ r +",1)");
 	}
 	res.status(204).send(); //per rimanere nella stessa pagina dopo un click
     });
+
 //=================== UTILITIES =========================
+
 
 var result = "";
 
@@ -131,6 +137,10 @@ app.setIoSocket = function( iosock ){
  	io    = iosock;
  	mqttUtils.setIoSocket(iosock);
 	console.log("app SETIOSOCKET io=" + io);
+}
+
+app.getIoSocket = function(){
+	return io;
 }
 
 
@@ -147,21 +157,16 @@ function delegateForAppl( cmd, req, res  ){
  	 publishMsgToRobotapplication( cmd );		     
 } 
 
-var coapToFridge = function(cmd){
-	if(cmd === "expose"){
-		console.log("coap GET > "+ cmd);
-		coap.coapGet(cmd);	//see coapClientFridge
-	}else{
-		console.log("coap PUT > "+ cmd);
-		coap.coapPut(cmd);	//see coapClientFridge
-	}
-}
+
 
 /*
  * ============ TO THE BUSINESS LOGIC =======
  */
 
-
+var coapToFridge = function(cmd){
+	console.log("coap PUT > "+ cmd);
+	coap.coapPut(cmd);	
+}
 
 var publishEmitEvent = function(ev, evContent){
 	var eventstr = evContent !== ""
@@ -172,50 +177,6 @@ var publishEmitEvent = function(ev, evContent){
 	mqttUtils.publish(eventstr, "unibo/qak/events");	 
 }
 
-
-/*
- * var publishMsgToRobotmind = function( cmd ){  
-  	var msgstr = "msg(robotCmd,dispatch,js,robotmind,robotCmd("+cmd +"),1)"  ;  
-  	console.log("publishMsgToRobotmind forward> "+ msgstr);
-   	mqttUtils.publish( msgstr, "unibo/qak/robotmind" );
-}
-
-var publishMsgToResourceModel = function( target, cmd ){  
-  	var msgstr = "msg(modelChange,dispatch,js,resourcemodel,modelChange("+target+", "+cmd +"),1)"  ;  
-  	console.log("publishMsgToResourceModel forward> "+ msgstr); 	
-   	mqttUtils.publish( msgstr, "unibo/qak/resourcemodel" );
-}
-
-var changeResourceModelCoap = function( cmd ){  
-    console.log("coap PUT> "+ cmd);
-	coap.coapPut(cmd);	//see coapClientToResourceModel
-}
-
-var publishEmitUserCmd = function( cmd ){  
- 	var eventstr = "msg(userCmd,event,js,none,userCmd("+cmd +"),1)"  ;  //TODO: replace 1 with counter
-    console.log("emits> "+ eventstr);
- 	mqttUtils.publish( eventstr, "unibo/qak/events" );	 
-}
-
-var pythonExec = function( cmd ){  
- 	var eventstr = "msg(rotationCmd,event,js,none,rotationCmd("+cmd +"),1)"  ;  //TODO: replace 1 with counter
-    console.log("terminatePythonExec emits> "+ eventstr);
- 	mqttUtils.publish( eventstr, "unibo/qak/events" );	 
-}
-
-var publishMsgToRobotapplication = function (cmd){
-   	var msgstr = "msg(" + cmd + ",dispatch,js,robotmindapplication,"+ cmd +"(go),1)"  ;  //TODO: replace 1 with counter
-  	console.log("publishMsgToRobotapplication forward> "+ msgstr);
-   	mqttUtils.publish( msgstr, "unibo/qak/robotmindapplication" );
-}
-
-//Towards the butler application => send to butlermind
-var publishMsgToButlerapplication = function (cmd){
-   	var msgstr = "msg(" + cmd + ",dispatch,js,butlermind,"+ cmd +"(go),1)"  ;  //TODO: replace 1 with counter
-  	console.log("publishMsgToRobotapplication forward> "+ msgstr);
-   	mqttUtils.publish( msgstr, "unibo/qak/butlermind");
-}
- * */
 /*
 * ====================== REPRESENTATION ================
 */
@@ -223,14 +184,6 @@ app.use( function(req,res){
 	console.info("SENDING THE ANSWER " + result + " json:" + req.accepts('josn') );
 	try{
 	    console.log("answer> "+ result  );
-	    /*
-	   if (req.accepts('json')) {
-	       return res.send(result);		//give answer to curl / postman
-	   } else {
-	       return res.render('index' );
-	   };
-	   */
-	   //return res.render('index' );  //NO: we loose the message sent via socket.io
 	}catch(e){console.info("SORRY ..." + e);}
 	} 
 );

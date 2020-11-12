@@ -23,7 +23,7 @@ $(document).ready(function(){
 //Gestione dell'evento onClick del bottone addfood
 function onClickAddFood(foodcode){
 	document.getElementById('addfoodbutton').disabled = true;
-    //document.getElementById('requestButton').disabled = true;
+    document.getElementById('requestButton').disabled = true;
     document.getElementById('clearButton').disabled = true;
     if(controlFoodCodeFormat(foodcode)){
     	document.getElementById('foodcodeform').submit();    	
@@ -45,21 +45,28 @@ function onClickPrepare(){
     document.getElementById('foodcode-dropdown').style.visibility = 'visible';
     document.getElementById('prepareButton').style.visibility = 'hidden';
     document.getElementById('addfoodbutton').disabled = true;
-   // document.getElementById('requestButton').style.visibility = 'visible';
+    document.getElementById('requestButton').style.visibility = 'visible';
 }
 
 //Gestione dell'evento onClick del bottone clear
 function onClickClear(){
     document.getElementById('addfoodbutton').disabled = true;
     document.getElementById('clearButton').disabled = true;
-   // document.getElementById('requestButton').disabled = true;
+    document.getElementById('requestButton').disabled = true;
     document.getElementById('clearform').submit();
     
 }
 
-function onClickRequest(){
-    document.getElementById('reqform').submit();
-    
+function onClickRequest(foodcode){
+	 if(controlFoodCodeFormat(foodcode)){
+		 document.getElementById('addfoodbutton').disabled = true;
+		 document.getElementById('clearButton').disabled = true;	
+	    }
+	    else
+	    	{
+	    	alert("Il codice del cibo deve iniziare con 'f' e contenere 3 numeri");
+	    	}
+	   // document.getElementById('foodcode-dropdown').value = "";  
 }
 
 function onClickStart(){
@@ -128,7 +135,7 @@ socket.on('message', function(v){
      } else if(msgStr === "endPrepare" || msgStr === "warning" || msgStr === "foodAdded"|| msgStr==="endAction"|| msgStr === "food_notavailable"){
          if(msgStr === "warning" || msgStr === "food_notavailable"){
         	 {
-        	  alert("Il frigo non contiene il codice selezionato.");
+        	  alert("Fridge 𝗗𝗢𝗘𝗦 𝗡𝗢𝗧 𝗖𝗢𝗡𝗧𝗔𝗜𝗡 selected foodcode");
         	}
          }
          document.getElementById('foodcode-dropdown').selectedIndex = 0;
@@ -180,6 +187,18 @@ socket.on('fridgeSocket', function(v){
 });
 
 
+//Canale 'request'
+socket.on('request', function(v){
+    if(v==="yes"){
+    	alert("Fridge 𝗖𝗢𝗡𝗧𝗔𝗜𝗡𝗦 selected foodcode");
+    }
+    else{
+    	alert("Fridge 𝗗𝗢𝗘𝗦 𝗡𝗢𝗧 𝗖𝗢𝗡𝗧𝗔𝗜𝗡 selected foodcode");
+    }
+    document.getElementById('foodcode-dropdown').selectedIndex = 0;
+    abilitaButton();
+});
+
 
 function formatterStringObjects(str){
     return str.replace(")", "").replaceAll(", ","").replaceAll("-", "\n").replaceAll(",","\t\t")
@@ -189,10 +208,11 @@ function abilitaButton(){
     document.getElementById('addfoodbutton').disabled = false;
     document.getElementById('clearButton').disabled = false;
     document.getElementById('stopButton').disabled = false;		
-   // document.getElementById('requestButton').disabled = false;
+    document.getElementById('requestButton').disabled = false;
    
 }
 
 function  EndClear(){
 	 document.getElementById('stopButton').disabled = true;		
 }
+
