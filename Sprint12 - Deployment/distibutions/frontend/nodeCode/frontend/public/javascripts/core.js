@@ -30,7 +30,7 @@ function onClickAddFood(foodcode){
     }
     else
     	{
-    	alert("Il codice del cibo deve iniziare con 'f' e contenere 3 numeri");
+    	alert("Foodcode has to start with 'f' and contain 3 numbers");
     	}
     document.getElementById('foodcode-dropdown').value = "";
 }
@@ -64,7 +64,7 @@ function onClickRequest(foodcode){
 	    }
 	    else
 	    	{
-	    	alert("Il codice del cibo deve iniziare con 'f' e contenere 3 numeri");
+	    	alert("Foodcode has to start with 'f' and contain 3 numbers");
 	    	}
 	   // document.getElementById('foodcode-dropdown').value = "";  
 }
@@ -84,7 +84,7 @@ function onClickStop(){
 function controlFoodCodeFormat(str){
     var patternFoodCode = new RegExp("f[0-9]{3}$");
     if(!patternFoodCode.test(str)){
-        console.log("Il codice del cibo deve iniziare con 'f' e contenere 3 numeri");
+        console.log("Foodcode has to start with 'f' and contain 3 numbers");
         abilitaButton();
         return false;
     }
