@@ -1,0 +1,4 @@
+item(datacleaner,nostate,msg(prepare_button,event,user,none,prepare_button(clicked),23)).
+item(datacleaner,nostate,msg(add_button,event,user,none,add_button(pizza,1),46)).
+item(datacleaner,nostate,msg(add_button,event,user,none,add_button(cheese,1),63)).
+item(datacleaner,nostate,msg(clear_button,event,user,none,clear_button(clicked),69)).

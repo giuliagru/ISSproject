@@ -1,0 +1,5 @@
+item(serverctxbasicrobot,nostate,msg(start,dispatch,serverctxbasicrobot,serverctxbasicrobot,startQakContextServer,3)).
+msg(prepare_button,event,user,none,prepare_button(clicked),23)
+msg(add_button,event,user,none,add_button(pizza,1),46)
+msg(add_button,event,user,none,add_button(cheese,1),63)
+msg(clear_button,event,user,none,clear_button(clicked),69)

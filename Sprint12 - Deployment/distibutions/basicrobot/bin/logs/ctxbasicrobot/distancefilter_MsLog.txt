@@ -1,0 +1,4 @@
+item(distancefilter,nostate,msg(prepare_button,event,user,none,prepare_button(clicked),23)).
+item(distancefilter,nostate,msg(add_button,event,user,none,add_button(pizza,1),46)).
+item(distancefilter,nostate,msg(add_button,event,user,none,add_button(cheese,1),63)).
+item(distancefilter,nostate,msg(clear_button,event,user,none,clear_button(clicked),69)).
