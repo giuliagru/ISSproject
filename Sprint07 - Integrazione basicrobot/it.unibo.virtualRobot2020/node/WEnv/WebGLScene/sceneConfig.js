@@ -20,22 +20,22 @@ const config = {
 //            senseAxis: { x: true, y: false }
 //        } 
      ],
-      movingObstacles: [
-        {
-            name: "ostacolo1",
-            position: { x: 0, y: 0.68 },
-            directionAxis: { x: true, y: false },
-            speed: 0.02,
-            range: 28
-        },
-        {
-            name: "ostacolo2",
-            position: { x: .42, y: .01 },
-            directionAxis: { x: false, y: true },
-            speed: 0.05,
-            range: 25
-        }
-    ],
+       movingObstacles: [
+        // {
+            // name: "ostacolo1",
+            // position: { x: 0, y: 0.68 },
+            // directionAxis: { x: true, y: false },
+            // speed: 0.02,
+            // range: 28
+        // },
+        // {
+            // name: "ostacolo2",
+            // position: { x: .42, y: .01 },
+            // directionAxis: { x: false, y: true },
+            // speed: 0.05,
+            // range: 25
+        // }
+     ],
    staticObstacles: [
 
 		{

@@ -41,8 +41,8 @@ Reply   stepdone   : stepdone(V)
 Reply   stepfail   : stepfail(DURATION, CAUSE)
 
 Context ctxrobot ip [host="localhost" port=8040] 
-Context ctxfridge ip [host="localhost" port=8038]
-Context ctxbasicrobot ip [host="localhost" port=8020]
+Context ctxfridge ip [host="127.0.0.1" port=8038]
+Context ctxbasicrobot ip [host="::1" port=8020]
 
 ExternalQActor fridge context ctxfridge
 ExternalQActor basicrobot context ctxbasicrobot
