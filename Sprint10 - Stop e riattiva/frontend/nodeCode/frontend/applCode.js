@@ -52,16 +52,7 @@ app.get('/', function(req, res) {
 	res.render("start");
 });	
 
-app.get('/robotmodel', function(req, res) {
-	res.send( mqttUtils.getrobotmodel() )
-});	
-app.get('/sonarrobotmodel', function(req, res) {
-	res.send( mqttUtils.getsonarrobotmodel() )
-});	
 
-app.get('/appl', function(req, res) {
-	res.render("indexAppl");
-});	
 
 /*
  * ====================== COMMANDS ================
